@@ -1,0 +1,304 @@
+{
+  "guardian": {
+    "mode": "strict",
+    "block_critical_only": true,
+    "educational_messages": true,
+    "severity_levels": {
+      "CRITICAL": {
+        "block": true,
+        "notify": true,
+        "log": true
+      },
+      "HIGH": {
+        "block": false,
+        "notify": true,
+        "log": true
+      },
+      "MEDIUM": {
+        "block": false,
+        "notify": true,
+        "log": true
+      },
+      "LOW": {
+        "block": false,
+        "notify": false,
+        "log": true
+      }
+    }
+  },
+  "legacy_guardian": {
+    "mode": "cautious",
+    "require_tests": true,
+    "backup_always": true,
+    "impact_analysis": true,
+    "rollback_ready": true,
+    "test_coverage_threshold": 95,
+    "safe_refactor": {
+      "max_changes_per_session": 10,
+      "require_review": true,
+      "auto_rollback_on_test_failure": true,
+      "monitoring_period_hours": 24
+    }
+  },
+  "ignored_paths": [
+    "tests/",
+    "migrations/",
+    ".venv/",
+    "venv/",
+    "env/",
+    "alembic/",
+    "__pycache__/",
+    ".git/",
+    ".pytest_cache/",
+    "node_modules/",
+    "dist/",
+    "build/",
+    ".claude/",
+    "docs/",
+    "scripts/setup/",
+    "*.pyc",
+    "*.pyo",
+    "*.pyd",
+    ".coverage",
+    "htmlcov/"
+  ],
+  "production_markers": [
+    "app/",
+    "core/",
+    "api/",
+    "src/",
+    "lib/",
+    "services/",
+    "models/",
+    "repositories/",
+    "controllers/",
+    "utils/",
+    "helpers/",
+    "middleware/"
+  ],
+  "test_generation": {
+    "framework": "pytest",
+    "coverage_threshold": 95,
+    "include_edge_cases": true,
+    "include_security_tests": true,
+    "include_performance_tests": true,
+    "mock_external_services": true,
+    "generate_fixtures": true,
+    "test_naming_convention": "test_{function_name}_{scenario}"
+  },
+  "security_rules": {
+    "sql_injection": {
+      "enabled": true,
+      "severity": "CRITICAL",
+      "patterns": [
+        "f-string in SQL",
+        "string concatenation in SQL",
+        ".format() in SQL",
+        "% formatting in SQL",
+        "direct variable interpolation"
+      ],
+      "safe_alternatives": [
+        "parameterized queries",
+        "SQLAlchemy ORM",
+        "prepared statements"
+      ]
+    },
+    "hardcoded_secrets": {
+      "enabled": true,
+      "severity": "CRITICAL",
+      "keywords": [
+        "password",
+        "passwd",
+        "pwd",
+        "secret",
+        "api_key",
+        "apikey",
+        "token",
+        "access_token",
+        "refresh_token",
+        "private_key",
+        "secret_key",
+        "auth_key",
+        "credentials"
+      ],
+      "connection_strings": [
+        "postgresql://",
+        "mysql://",
+        "mongodb://",
+        "redis://",
+        "amqp://",
+        "sqlite:///"
+      ]
+    },
+    "authentication": {
+      "enabled": true,
+      "severity": "HIGH",
+      "public_endpoints": [
+        "health",
+        "healthz",
+        "docs",
+        "redoc",
+        "openapi.json",
+        "metrics",
+        "favicon.ico",
+        "static",
+        "public",
+        "login",
+        "register",
+        "forgot-password",
+        "reset-password"
+      ],
+      "required_decorators": [
+        "Depends",
+        "Security",
+        "HTTPBearer",
+        "OAuth2",
+        "require_auth",
+        "login_required"
+      ]
+    },
+    "weak_crypto": {
+      "enabled": true,
+      "severity": "HIGH",
+      "weak_algorithms": [
+        "md5",
+        "sha1",
+        "des",
+        "rc4"
+      ],
+      "weak_key_sizes": {
+        "rsa": 2048,
+        "ecdsa": 256,
+        "jwt_secret": 32
+      }
+    },
+    "data_exposure": {
+      "enabled": true,
+      "severity": "HIGH",
+      "sensitive_fields": [
+        "password",
+        "ssn",
+        "credit_card",
+        "bank_account",
+        "private_key",
+        "secret",
+        "token",
+        "api_key",
+        "pin",
+        "cvv",
+        "tax_id"
+      ],
+      "log_patterns": [
+        "log.*password",
+        "print.*token",
+        "logger.*secret",
+        "console.*api_key"
+      ]
+    },
+    "cors": {
+      "enabled": true,
+      "severity": "HIGH",
+      "unsafe_origins": [
+        "*",
+        "null",
+        "file://"
+      ]
+    },
+    "async_patterns": {
+      "enabled": true,
+      "severity": "MEDIUM",
+      "blocking_calls": [
+        "time.sleep",
+        "requests.",
+        "urllib.",
+        "socket.",
+        "subprocess.run",
+        "os.system"
+      ],
+      "async_alternatives": {
+        "time.sleep": "asyncio.sleep",
+        "requests": "httpx or aiohttp",
+        "subprocess.run": "asyncio.create_subprocess_exec"
+      }
+    },
+    "input_validation": {
+      "enabled": true,
+      "severity": "HIGH",
+      "pydantic_fields": {
+        "email": "EmailStr",
+        "url": "HttpUrl",
+        "password": "SecretStr",
+        "phone": "constr(regex=...)",
+        "credit_card": "constr(regex=...) + SecretStr"
+      }
+    },
+    "file_operations": {
+      "enabled": true,
+      "severity": "HIGH",
+      "unsafe_operations": [
+        "eval(",
+        "exec(",
+        "__import__",
+        "compile(",
+        "pickle.loads",
+        "yaml.load("
+      ],
+      "path_traversal_patterns": [
+        "../",
+        "..\\",
+        "%2e%2e",
+        "0x2e0x2e"
+      ]
+    },
+    "rate_limiting": {
+      "enabled": true,
+      "severity": "MEDIUM",
+      "endpoints_requiring_limits": [
+        "login",
+        "register",
+        "password-reset",
+        "api",
+        "upload",
+        "download"
+      ]
+    }
+  },
+  "reporting": {
+    "save_reports": true,
+    "report_directory": ".claude/security_reports",
+    "report_format": "text",
+    "include_fix_suggestions": true,
+    "include_learning_resources": true,
+    "max_reports_to_keep": 100,
+    "report_retention_days": 90
+  },
+  "notifications": {
+    "enabled": false,
+    "channels": [],
+    "critical_only": true,
+    "batch_notifications": true,
+    "notification_interval_minutes": 5
+  },
+  "performance": {
+    "max_file_size_mb": 10,
+    "timeout_seconds": 30,
+    "cache_analysis_results": true,
+    "parallel_analysis": false
+  },
+  "custom_rules": [],
+  "exceptions": {
+    "allowed_hardcoded_values": [
+      "localhost",
+      "127.0.0.1",
+      "0.0.0.0",
+      "example.com",
+      "test"
+    ],
+    "skip_files": [
+      "settings.py",
+      "config.py",
+      "test_*.py",
+      "*_test.py"
+    ]
+  }
+}

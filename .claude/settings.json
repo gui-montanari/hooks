@@ -1,0 +1,67 @@
+{
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 hooks/auto_token_updater.py"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 hooks/architecture_updater.py"
+          },
+          {
+            "type": "command",
+            "command": "python3 hooks/changelog_updater.py"
+          },
+          {
+            "type": "command",
+            "command": "python3 hooks/legacy_guardian.py"
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Write|Edit|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 hooks/root_file_guard.py"
+          },
+          {
+            "type": "command",
+            "command": "python3 hooks/guardian.py"
+          }
+        ]
+      },
+      {
+        "matcher": "Bash|Delete|MultiDelete|Move",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 hooks/repository_guardian.py"
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 hooks/file_organizer.py"
+          }
+        ]
+      }
+    ]
+  }
+}
