@@ -170,7 +170,7 @@ class EndpointTestGenerator:
         test = f"""    async def {method_name}(
         {fixture_str}
     ):
-        \"\"\"Test successful {endpoint['name']} request\"\"\""""
+        \"\"\"Test successful {endpoint['name']} request\"\"\"
         # Arrange
         # TODO: Set up test data
         
@@ -202,7 +202,7 @@ class EndpointTestGenerator:
         test = f"""    async def {method_name}(
         {fixture_str}
     ):
-        """Test {endpoint['name']} without authentication"""
+        \"\"\""Test {endpoint['name']} without authentication\"\"\"
         response = await client.{endpoint['method'].lower()}(
             f"{path}"
         )
@@ -222,7 +222,7 @@ class EndpointTestGenerator:
         client: AsyncClient,
         auth_headers: dict
     ):
-        """Test {endpoint['name']} with insufficient permissions"""
+        \"\"\""Test {endpoint['name']} with insufficient permissions\"\"\"
         # TODO: Implement based on endpoint's permission requirements
         # Example: trying to access another user's resource
         pass
@@ -242,7 +242,7 @@ class EndpointTestGenerator:
         test = f"""    async def {method_name}(
         {fixture_str}
     ):
-        """Test {endpoint['name']} with invalid data"""
+        \"\"\""Test {endpoint['name']} with invalid data\"\"\"
         invalid_data = {{
             # TODO: Add invalid data based on validation rules
             "invalid_field": "invalid_value"
@@ -277,7 +277,7 @@ class EndpointTestGenerator:
         test = f"""    async def {method_name}(
         {fixture_str}
     ):
-        """Test {endpoint['name']} with non-existent resource"""
+        \"\"\"Test {endpoint['name']} with non-existent resource\"\"\"
         response = await client.{endpoint['method'].lower()}(
             "{path}"{',\\n            headers=auth_headers' if endpoint['auth_required'] else ''}
         )
@@ -296,7 +296,7 @@ class EndpointTestGenerator:
         auth_headers: dict,
         create_upload_file
     ):
-        """Test {endpoint['name']} with file upload"""
+        \"\"\"Test {endpoint['name']} with file upload\"\"\"
         # Arrange
         file = create_upload_file("test.pdf", b"test content")
         

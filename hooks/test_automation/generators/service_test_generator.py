@@ -127,7 +127,7 @@ class ServiceTestGenerator:
         
         fixture = f"""    @pytest.fixture
     async def {fixture_name}(self, db: AsyncSession):
-        """Create {service['name']} instance"""
+        \"\"\"Create {service['name']} instance\"\"\"
 """
         
         # Add dependencies
@@ -164,7 +164,7 @@ class ServiceTestGenerator:
         test = f"""    {'async ' if method['is_async'] else ''}def {test_name}(
         {fixture_str}
     ):
-        """Test {method['name']} method"""
+        \"\"\"Test {method['name']} method\"\"\"
         # Arrange
 """
         
@@ -209,7 +209,7 @@ class ServiceTestGenerator:
         self,
         {service_fixture}: {service_name}
     ):
-        """Test {method['name']} error handling"""
+        \"\"\"Test {method['name']} error handling\"\"\"
 """
         
         for exception in method['raises']:
@@ -263,7 +263,7 @@ class ServiceTestGenerator:
         test_name = f"test_{function['name']}"
         
         test = f"""{'async ' if function['is_async'] else ''}def {test_name}():
-    """Test {function['name']} function"""
+    \"\"\"Test {function['name']} function\"\"\"
     # Arrange
 """
         
@@ -300,7 +300,7 @@ class ServiceTestGenerator:
         
         for exception in function['raises']:
             test += f"""def test_{function['name']}_raises_{exception.lower()}():
-    """Test {function['name']} raises {exception}"""
+    \"\"\"Test {function['name']} raises {exception}\"\"\"""
     with pytest.raises({exception}):
         {'await ' if function['is_async'] else ''}{function['name']}(
             # TODO: Add parameters that trigger {exception}

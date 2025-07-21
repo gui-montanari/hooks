@@ -135,7 +135,7 @@ class ModelTestGenerator:
         self,
         db: AsyncSession
     ):
-        """Test creating a {model['name']}"""
+        \"\"\"Test creating a {model['name']}\"\"\"
         # Arrange
         {self._to_snake_case(model['name'])}_data = {{
 """
@@ -167,7 +167,7 @@ class ModelTestGenerator:
         db: AsyncSession,
         {self._to_snake_case(model['name'])}_factory
     ):
-        """Test retrieving a {model['name']}"""
+        \"\"\"Test retrieving a {model['name']}\"\"\"
         # Arrange
         {self._to_snake_case(model['name'])} = await {self._to_snake_case(model['name'])}_factory.create()
         
@@ -186,7 +186,7 @@ class ModelTestGenerator:
         db: AsyncSession,
         {self._to_snake_case(model['name'])}_factory
     ):
-        """Test updating a {model['name']}"""
+        \"\"\"Test updating a {model['name']}\"\"\"
         # Arrange
         {self._to_snake_case(model['name'])} = await {self._to_snake_case(model['name'])}_factory.create()
         
@@ -206,7 +206,7 @@ class ModelTestGenerator:
         db: AsyncSession,
         {self._to_snake_case(model['name'])}_factory
     ):
-        """Test deleting a {model['name']}"""
+        \"\"\"Test deleting a {model['name']}\"\"\"
         # Arrange
         {self._to_snake_case(model['name'])} = await {self._to_snake_case(model['name'])}_factory.create()
         {self._to_snake_case(model['name'])}_id = {self._to_snake_case(model['name'])}.id
@@ -234,7 +234,7 @@ class ModelTestGenerator:
         if required_fields:
             tests += f"""    @pytest.mark.parametrize("field", {[f['name'] for f in required_fields]})
     async def test_required_fields(self, db: AsyncSession, field: str):
-        """Test that required fields cannot be null"""
+        \"\"\"Test that required fields cannot be null\"\"\"
         data = {{
             # TODO: Add all required fields except the one being tested
         }}
@@ -256,7 +256,7 @@ class ModelTestGenerator:
         db: AsyncSession,
         {self._to_snake_case(model['name'])}_factory
     ):
-        """Test unique field constraints"""
+        \"\"\"Test unique field constraints\"\"\"
 """
             for field in unique_fields:
                 tests += f"""        # Test {field['name']} uniqueness
@@ -281,7 +281,7 @@ class ModelTestGenerator:
         db: AsyncSession,
         {self._to_snake_case(model['name'])}_factory
     ):
-        """Test {rel['name']} relationship"""
+        \"\"\"Test {rel['name']} relationship\"\"\"
         # TODO: Implement relationship test
         # - Create related objects
         # - Test accessing relationship
@@ -301,7 +301,7 @@ class ModelTestGenerator:
         
         if foreign_keys:
             tests += """    async def test_foreign_key_constraints(self, db: AsyncSession):
-        """Test foreign key constraints"""
+        \"\"\"Test foreign key constraints\"\"\"
 """
             for fk in foreign_keys:
                 tests += f"""        # Test {fk['name']} foreign key
@@ -322,7 +322,7 @@ class ModelTestGenerator:
         
         # Test valid data
         tests += f"""    def test_valid_{self._to_snake_case(model['name'])}(self):
-        """Test creating {model['name']} with valid data"""
+        \"\"\"Test creating {model['name']} with valid data\"\"\"
         data = {{
 """
         
@@ -339,7 +339,7 @@ class ModelTestGenerator:
         
         # Test invalid data
         tests += f"""    def test_invalid_{self._to_snake_case(model['name'])}(self):
-        """Test {model['name']} validation errors"""
+        \"\"\"Test {model['name']} validation errors\"\"\"
         with pytest.raises(ValidationError) as exc_info:
             {model['name']}(
                 # TODO: Add invalid data
@@ -355,7 +355,7 @@ class ModelTestGenerator:
         
         if optional_fields:
             tests += f"""    def test_optional_fields(self):
-        """Test {model['name']} with optional fields"""
+        \"\"\"Test {model['name']} with optional fields\"\"\"
         minimal_data = {{
             # TODO: Add only required fields
         }}
@@ -373,7 +373,7 @@ class ModelTestGenerator:
     def _generate_serialization_tests(self, model: Dict[str, Any]) -> str:
         """Generate serialization/deserialization tests"""
         return f"""    def test_serialization(self):
-        """Test {model['name']} serialization"""
+        \"\"\"Test {model['name']} serialization\"\"\"
         {self._to_snake_case(model['name'])} = {model['name']}(
             # TODO: Add test data
         )
@@ -398,7 +398,7 @@ class ModelTestGenerator:
         
         for validator in model['validators']:
             tests += f"""    def test_{validator['name']}_validator(self):
-        """Test {validator['name']} validator"""
+        \"\"\"Test {validator['name']} validator\"\"\"
         # TODO: Test validator logic
         # - Test valid inputs
         # - Test invalid inputs that should be rejected

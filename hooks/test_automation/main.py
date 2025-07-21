@@ -15,7 +15,7 @@ from .analyzers.model_analyzer import ModelAnalyzer
 from .generators.endpoint_test_generator import EndpointTestGenerator
 from .generators.service_test_generator import ServiceTestGenerator
 from .generators.model_test_generator import ModelTestGenerator
-from .utils.config import load_config
+from .utils.config import config
 from .utils.logger import logger
 
 
@@ -23,7 +23,7 @@ class TestGenerator:
     """Main test generator coordinating different analyzers and generators"""
     
     def __init__(self):
-        self.config = load_config()
+        self.config = config._config
         
         # Initialize analyzers
         self.endpoint_analyzer = EndpointAnalyzer(self.config)
