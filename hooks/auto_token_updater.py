@@ -22,12 +22,37 @@ def load_token_count():
         try:
             with open(TOKEN_COUNT_FILE, 'r') as f:
                 data = json.load(f)
+                # Garante que todos os campos necessários existem
                 if "last_milestone" not in data:
                     data["last_milestone"] = 0
+                if "last_commit_milestone" not in data:
+                    data["last_commit_milestone"] = 0
+                if "tokens_since_last_commit" not in data:
+                    data["tokens_since_last_commit"] = 0
+                if "last_reset_at" not in data:
+                    data["last_reset_at"] = None
+                if "total_before_reset" not in data:
+                    data["total_before_reset"] = None
                 return data
         except:
-            return {"total": 0, "last_update": None, "last_milestone": 0}
-    return {"total": 0, "last_update": None, "last_milestone": 0}
+            return {
+                "total": 0, 
+                "last_update": None, 
+                "last_milestone": 0,
+                "last_commit_milestone": 0,
+                "tokens_since_last_commit": 0,
+                "last_reset_at": None,
+                "total_before_reset": None
+            }
+    return {
+        "total": 0, 
+        "last_update": None, 
+        "last_milestone": 0,
+        "last_commit_milestone": 0,
+        "tokens_since_last_commit": 0,
+        "last_reset_at": None,
+        "total_before_reset": None
+    }
 
 def load_log_entries():
     """Carrega entradas de log existentes."""
@@ -178,11 +203,20 @@ def main():
     count_data["total"] += tokens_used
     count_data["last_update"] = datetime.now().isoformat()
     
+    # Incrementa contador desde último commit
+    count_data["tokens_since_last_commit"] = count_data.get("tokens_since_last_commit", 0) + tokens_used
+    
     # Reseta se atingir 100k
     if count_data["total"] >= MAX_TOKENS:
         print(f"\n🔄 Resetando contador de tokens (atingiu {MAX_TOKENS:,})")
+        # Salva informações do reset
+        count_data["total_before_reset"] = count_data["total"]
+        count_data["last_reset_at"] = datetime.now().isoformat()
+        
+        # Reseta contadores
         count_data["total"] = tokens_used
         count_data["last_milestone"] = 0
+        count_data["last_commit_milestone"] = 0  # Reseta milestone de commit também
     
     # Verifica milestones
     current_milestone = (count_data["total"] // 10000) * 10000

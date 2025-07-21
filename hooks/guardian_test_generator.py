@@ -598,12 +598,23 @@ class ModuleAnalyzer(ast.NodeVisitor):
 def main():
     """CLI interface for test generator"""
     import sys
+    import os
+    import glob
     
+    # If no file provided, find recent Python files
     if len(sys.argv) < 2:
-        print("Usage: python guardian_test_generator.py <file_path>")
-        sys.exit(1)
-    
-    file_path = sys.argv[1]
+        # Look for recently modified Python files in app/
+        app_files = glob.glob("app/**/*.py", recursive=True)
+        if not app_files:
+            print("Usage: python guardian_test_generator.py <file_path>")
+            print("Or run from project root with Python files in app/ directory")
+            sys.exit(1)
+        
+        # Get most recently modified file
+        file_path = max(app_files, key=os.path.getmtime)
+        print(f"🔍 Auto-detected recent file: {file_path}")
+    else:
+        file_path = sys.argv[1]
     
     # Read file content
     try:
@@ -617,8 +628,12 @@ def main():
     generator = TestGenerator()
     test_content = generator.generate_test_suite(file_path, content, [])
     
-    # Output test file
-    test_file = f"test_{Path(file_path).stem}_generated.py"
+    # Create test directory if it doesn't exist
+    test_dir = Path("tests/guardian_generated")
+    test_dir.mkdir(parents=True, exist_ok=True)
+    
+    # Output test file in the correct directory
+    test_file = test_dir / f"test_{Path(file_path).stem}_generated.py"
     with open(test_file, 'w') as f:
         f.write(test_content)
     
