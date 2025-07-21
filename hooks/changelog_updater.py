@@ -14,7 +14,7 @@ import re
 # Configurações
 TOKEN_COUNT_FILE = Path(__file__).parent.parent / ".token_count.json"
 CHANGELOG_FILE = Path(__file__).parent.parent / "CHANGELOG.md"
-MILESTONE_INTERVAL = 10000  # Atualiza a cada 10k
+MILESTONE_INTERVAL = 20000  # Atualiza a cada 10k
 PROJECT_ROOT = Path(__file__).parent.parent
 
 def load_token_count():

@@ -1,0 +1,78 @@
+{
+  "test_generator": {
+    "enabled": true,
+    "auto_generate_on_create": true,
+    "test_directory": "tests/automated_tests",
+    "test_prefix": "test_auto_",
+    
+    "generation_rules": {
+      "endpoints": {
+        "generate_auth_tests": true,
+        "generate_validation_tests": true,
+        "generate_error_tests": true,
+        "generate_edge_cases": true
+      },
+      "models": {
+        "generate_crud_tests": true,
+        "generate_validation_tests": true,
+        "generate_relationship_tests": true
+      },
+      "services": {
+        "generate_unit_tests": true,
+        "generate_integration_tests": false
+      }
+    },
+    
+    "smart_detection": {
+      "detect_auth_requirements": true,
+      "detect_validation_rules": true,
+      "detect_file_uploads": true,
+      "detect_pagination": true
+    },
+    
+    "templates": {
+      "use_factories": true,
+      "use_fixtures": true,
+      "add_todo_comments": true
+    }
+  },
+  
+  "test_runner": {
+    "pytest_args": [
+      "-v",
+      "--tb=short",
+      "--strict-markers",
+      "--asyncio-mode=auto"
+    ],
+    "coverage_args": [
+      "--cov=app",
+      "--cov-report=json",
+      "--cov-report=term-missing"
+    ],
+    "parallel_execution": true,
+    "max_workers": 4,
+    "timeout_seconds": 30,
+    
+    "tracking": {
+      "history_size": 3,
+      "track_duration": true,
+      "track_memory": false,
+      "identify_flaky_threshold": 0.7
+    },
+    
+    "reporting": {
+      "generate_md": true,
+      "generate_json": true,
+      "generate_html": false,
+      "include_recommendations": true,
+      "include_history": true
+    }
+  },
+  
+  "integration": {
+    "pre_commit_hook": false,
+    "ci_integration": true,
+    "fail_on_coverage_decrease": true,
+    "min_coverage_percent": 80
+  }
+}

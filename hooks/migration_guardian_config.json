@@ -1,0 +1,57 @@
+{
+  "auto_generate": true,
+  "require_review": true,
+  "block_dangerous": false,
+  "analyze_data_impact": true,
+  "generate_rollback": true,
+  "staging_test_required": true,
+  
+  "monitored_paths": [
+    "app/*/models/*.py",
+    "app/*/models/**/*.py",
+    "app/core/models/*.py",
+    "app/shared/models/*.py"
+  ],
+  
+  "module_detection": {
+    "enabled": true,
+    "extract_module_name": true,
+    "prefix_migrations_with_module": true
+  },
+  
+  "dangerous_operations": [
+    "DROP TABLE",
+    "DROP COLUMN",
+    "DROP CONSTRAINT",
+    "ALTER COLUMN.*NOT NULL",
+    "DELETE FROM",
+    "TRUNCATE"
+  ],
+  
+  "safety_thresholds": {
+    "max_affected_rows_auto": 1000,
+    "require_backup_above_rows": 10000,
+    "require_staged_migration_above": 100000
+  },
+  
+  "naming_convention": {
+    "format": "{timestamp}_{module}_{description}",
+    "timestamp": "%Y_%m_%d_%H%M",
+    "dangerous_suffix": "_DANGEROUS",
+    "staged_suffix": "_staged",
+    "module_separator": "_"
+  },
+  
+  "cross_module_detection": {
+    "enabled": true,
+    "warn_on_cross_dependencies": true,
+    "generate_dependency_graph": true
+  },
+  
+  "auto_backup": {
+    "enabled": true,
+    "location": ".claude/db_backups/",
+    "before_dangerous_ops": true,
+    "include_module_name": true
+  }
+}

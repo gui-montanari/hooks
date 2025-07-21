@@ -6,6 +6,10 @@
           {
             "type": "command",
             "command": "python3 hooks/auto_token_updater.py"
+          },
+          {
+            "type": "command",
+            "command": "python3 hooks/auto_commit.py"
           }
         ]
       }
@@ -25,6 +29,22 @@
           {
             "type": "command",
             "command": "python3 hooks/legacy_guardian.py"
+          },
+          {
+            "type": "command",
+            "command": "python3 hooks/migration_guardian.py"
+          },
+          {
+            "type": "command",
+            "command": "python3 hooks/guardian_test_generator.py"
+          },
+          {
+            "type": "command",
+            "command": "python3 hooks/test_generator.py"
+          },
+          {
+            "type": "command",
+            "command": "python3 hooks/style_guardian.py"
           }
         ]
       }
@@ -59,6 +79,10 @@
           {
             "type": "command",
             "command": "python3 hooks/file_organizer.py"
+          },
+          {
+            "type": "command",
+            "command": "python3 hooks/generate_architecture_docs.py"
           }
         ]
       }

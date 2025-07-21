@@ -1,0 +1,116 @@
+{
+  "style_guardian": {
+    "enabled": true,
+    "auto_fix": true,
+    "mode": "strict",
+    
+    "rules": {
+      "imports": {
+        "organize": true,
+        "remove_unused": true,
+        "group_order": ["stdlib", "third_party", "local"],
+        "force_absolute": true
+      },
+      
+      "type_hints": {
+        "enforce": true,
+        "require_return_type": true,
+        "disallow_any": true,
+        "infer_types": true
+      },
+      
+      "naming": {
+        "functions": "snake_case",
+        "classes": "PascalCase", 
+        "constants": "UPPER_SNAKE_CASE",
+        "private_prefix": "_",
+        "boolean_prefix": ["is_", "has_", "can_", "should_"]
+      },
+      
+      "docstrings": {
+        "enforce": true,
+        "style": "google",
+        "min_function_length": 3,
+        "require_examples": false
+      },
+      
+      "complexity": {
+        "max_cyclomatic": 10,
+        "max_function_lines": 50,
+        "max_indentation": 4,
+        "max_parameters": 5,
+        "max_returns": 3
+      },
+      
+      "modern_python": {
+        "use_f_strings": true,
+        "use_pathlib": true,
+        "use_type_unions": true,
+        "use_walrus": false
+      }
+    },
+    
+    "ignore_patterns": [
+      "tests/",
+      "migrations/",
+      ".venv/",
+      "*_pb2.py",
+      "__pycache__/",
+      "*.pyc",
+      "alembic/",
+      "venv/",
+      "build/",
+      "dist/",
+      "*.egg-info/",
+      ".git/",
+      ".pytest_cache/",
+      ".mypy_cache/",
+      "node_modules/",
+      "hooks/test_automation/",
+      "architecture/"
+    ],
+    
+    "reporting": {
+      "save_reports": true,
+      "report_location": ".claude/style_reports/",
+      "include_metrics": true,
+      "track_improvements": true
+    },
+    
+    "special_rules": {
+      "fastapi_endpoints": {
+        "naming_pattern": "plural",
+        "response_model_required": true,
+        "status_code_explicit": true
+      },
+      
+      "sqlalchemy_models": {
+        "table_name_required": true,
+        "relationship_lazy": "select",
+        "column_nullable_explicit": true
+      },
+      
+      "pydantic_schemas": {
+        "config_required": true,
+        "example_required": false,
+        "field_description": true
+      }
+    },
+    
+    "auto_imports": {
+      "typing": ["Dict", "List", "Optional", "Any", "Union", "Tuple", "Set"],
+      "datetime": ["datetime", "date", "time", "timedelta"],
+      "pathlib": ["Path"],
+      "collections": ["defaultdict", "Counter", "OrderedDict"],
+      "decimal": ["Decimal"]
+    },
+    
+    "common_fixes": {
+      "print_to_logger": true,
+      "assert_to_raise": true,
+      "hardcoded_paths_to_pathlib": true,
+      "string_concat_to_fstring": true,
+      "dict_get_with_default": true
+    }
+  }
+}
